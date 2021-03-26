@@ -12,8 +12,9 @@ import (
 type LocaleContextKey string
 
 const (
-	Translator LocaleContextKey = "locale.translator"
-	Locale     LocaleContextKey = "locale.locale"
+	Translator     LocaleContextKey = "locale.translator"
+	Locale         LocaleContextKey = "locale.locale"
+	AcceptLanguage LocaleContextKey = "locale.acceptLanguage"
 )
 
 type LocaleServer interface {
@@ -40,6 +41,7 @@ func LocaleMiddleware() grpc.UnaryServerInterceptor {
 		t, _ := server.UniversalTranslator().GetTranslator(locale)
 		ctx = context.WithValue(ctx, Translator, t)
 		ctx = context.WithValue(ctx, Locale, locale)
+		ctx = context.WithValue(ctx, AcceptLanguage, acceptLanguage)
 		return handler(ctx, req)
 	}
 }
