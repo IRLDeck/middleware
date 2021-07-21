@@ -41,7 +41,11 @@ func LocaleMiddleware() grpc.UnaryServerInterceptor {
 		t, _ := server.UniversalTranslator().GetTranslator(locale)
 		ctx = context.WithValue(ctx, Translator, t)
 		ctx = context.WithValue(ctx, Locale, locale)
-		ctx = context.WithValue(ctx, AcceptLanguage, acceptLanguage[0])
+
+		if len(acceptLanguage) > 0 {
+			ctx = context.WithValue(ctx, AcceptLanguage, acceptLanguage[0])
+		}
+
 		return handler(ctx, req)
 	}
 }
